@@ -3,6 +3,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const gallery = document.querySelector(".gallery")
 const loader = document.querySelector(".loader")
+export const btnLoadMore = document.querySelector(".load-more-btn")
 
 const lightbox = new SimpleLightbox(".gallery a", {
   captions: true,
@@ -11,7 +12,7 @@ const lightbox = new SimpleLightbox(".gallery a", {
 })
 
 export function createGallery(images) {
-  gallery.innerHTML = images.map(({
+  gallery.innerHTML += images.map(({
           webformatURL,
           largeImageURL,
           tags,
@@ -48,4 +49,23 @@ export function showLoader() {
 
 export function hideLoader() {
     loader.classList.add("hidden")
+}
+
+export function showLoadMoreButton() {
+  btnLoadMore.classList.remove("hidden")
+}
+
+export function hideLoadMoreButton() {
+  btnLoadMore.classList.add("hidden")
+}
+
+export function smoothScroll() {
+  const { height } = gallery
+    .firstElementChild
+    .getBoundingClientRect();
+
+  window.scrollBy({
+    top: height * 2,
+    behavior: "smooth",
+  });
 }
