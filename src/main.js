@@ -54,7 +54,7 @@ async function searchImg(event) {
     }
 
     createGallery(res.hits);
-    
+
     form.reset();
 
     if(page === (Math.ceil(res.totalHits / perPage))) {
@@ -64,11 +64,13 @@ async function searchImg(event) {
         color: 'blue',
         position: 'topRight',
       });
+      hideLoadMoreButton();
       return
     } else {
-      page++
       showLoadMoreButton()
     }
+
+    page++
   } catch (error) {
     iziToast.show({
       message:
@@ -83,31 +85,33 @@ async function searchImg(event) {
 
 btnLoadMore.addEventListener('click', loadMore)
 async function loadMore() {
-  hideLoadMoreButton()
+  hideLoadMoreButton();
 
   try {
-    showLoader()
+    showLoader();
     const res = await getImagesByQuery(searchElem, page);
+
     createGallery(res.hits);
-    smoothScroll()
+    smoothScroll();
 
-    page++
+    page++;
 
-    if(page === (Math.ceil(res.totalHits / 15))) {
+    const totalPages = Math.ceil(res.totalHits / perPage);
+
+    if (page > totalPages || res.hits.length < perPage) {
       iziToast.show({
-        message:
-          "We're sorry, but you've reached the end of search results.",
+        message: "We're sorry, but you've reached the end of search results.",
         color: 'blue',
         position: 'topRight',
       });
-      return
+      hideLoadMoreButton();
     } else {
-      showLoadMoreButton()
+      showLoadMoreButton();
     }
+
   } catch (error) {
     iziToast.show({
-      message:
-        'Sorry, there are some problems...',
+      message: 'Sorry, there are some problems...',
       color: 'red',
       position: 'topRight',
     });

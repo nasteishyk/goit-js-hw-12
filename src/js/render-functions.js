@@ -12,6 +12,8 @@ const lightbox = new SimpleLightbox(".gallery a", {
 })
 
 export function createGallery(images) {
+  if (images.length === 0) return;
+  
   const markup = images.map(({
           webformatURL,
           largeImageURL,
